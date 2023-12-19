@@ -10,7 +10,7 @@
         overflow: auto;
       }
     </style>
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/style.css" />
     <!-- <script src="node_modules/three/examples/jsm/loaders/GLTFLoader.js"></script> -->
   </head>
   <body>
@@ -23,5 +23,31 @@
       }
     </script>
     <script type="module" src="./script/script.js"></script>
+    <div id="menukiri">
+      <button id="fsButtonLeft">Full Screen</button>
+      <button id="pauseButtonLeft">Pause</button>
+      <button id="homeButtonLeft">Home</button>
+    </div>
+    <div id="menukanan">
+      <button id="twtButtonRight">Twitter</button>
+      <button id="googleButtonRight">Google</button>
+      <button id="fbButtonRight">Facebook</button>
+    </div>
+    <div id="menubawah">
+      <button id="carModelButton">Select Car Model</button>
+      <div id="carDropdown">
+        <ul>
+          <li>Car Model 1</li>
+          <li>Car Model 2</li>
+          <li>Car Model 3</li>
+        </ul>
+      </div>
+      <button id="carColorButton">Car Color</button>
+      <input type="color" id="colorPicker" style="display: none" />
+
+      <button id="wheelColorButton">Wheel Color</button>
+
+      <button id="soundButton">Sound</button>
+    </div>
   </body>
 </html>

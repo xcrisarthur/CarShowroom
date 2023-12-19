@@ -1,0 +1,69 @@
+body {
+  margin: 0;
+  overflow: auto;
+}
+#menukiri {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+}
+#menukanan {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+}
+#menubawah {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+/* Styling untuk canvas */
+#canvas-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+/* Styling untuk dropdown */
+#carDropdown {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  padding: 5px;
+  z-index: 2;
+  /* Munculkan dropdown dari atas */
+  bottom: calc(100% + 5px);
+}
+#carDropdown ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+#carDropdown ul li {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+/* ... (style lain yang sudah ada) ... */
+/* Style untuk color picker */
+/* ... (style lain yang sudah ada) ... */
+/* Style untuk color picker */
+#colorPicker {
+  display: none;
+  position: absolute;
+  z-index: 1;
+  /* Atur posisi tepat di atas tombol "Car Color" */
+  top: calc(100% + 5px);
+  left: 50%;
+  transform: translate(-50%, -100%);
+  /* Sesuaikan gaya sesuai kebutuhan */
+  padding: 5px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+}
