@@ -81,16 +81,26 @@ const cylinder = new THREE.Mesh(geometryCylinder, materialCylinder);
 scene.add(cylinder);
 
 const light = new THREE.PointLight(0xffffff, 100, 100);
-light.position.set(0, 4, 0);
+light.position.set(2.5, 2, 0);
 scene.add(light);
 
 const light2 = new THREE.PointLight(0xffffff, 100, 100);
-light2.position.set(0, 4, 0);
+light2.position.set(-2.5, 2, 0);
 scene.add(light2);
+
+const light3 = new THREE.PointLight(0xffffff, 100, 100);
+light3.position.set(0, 3, 0);
+scene.add(light3);
+
+const light4 = new THREE.PointLight(0xffffff, 100, 100);
+light4.position.set(0, 1, -3);
+scene.add(light4);
+
+
 
 const sphereSize = 1;
 const pointLightHelper = new THREE.PointLightHelper(light, sphereSize);
-scene.add(pointLightHelper);
+// scene.add(pointLightHelper);
 
 const gltfLoader = new GLTFLoader();
 gltfLoader.load("../models/scene.gltf", (gltfScene) => {
@@ -105,18 +115,6 @@ const divisions = 15;
 const gridHelper = new THREE.GridHelper(size, divisions);
 scene.add(gridHelper);
 
-function carSelect() {
-  const carModelButton = document.getElementById("carModelButton");
-  const carDropdown = document.getElementById("carDropdown");
-
-  carModelButton.addEventListener("click", () => {
-    if (carDropdown.style.display === "block") {
-      carDropdown.style.display = "none";
-    } else {
-      carDropdown.style.display = "block";
-    }
-  });
-}
 function color() {
   const carColorButton = document.getElementById("carColorButton");
   const colorPicker = document.getElementById("colorPicker");
@@ -132,10 +130,11 @@ function color() {
   });
 }
 color();
-carSelect();
+
 
 const draw = () => {
   // cylinder.rotation.y += 0.001;
+  // camera.rotation.x += 0.1
 
   renderer.render(scene, camera);
   requestAnimationFrame(draw);
