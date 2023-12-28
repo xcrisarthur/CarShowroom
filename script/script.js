@@ -57,10 +57,10 @@ wall3.position.z = -7;
 wall3.position.y = 2.5;
 scene.add(wall3);
 
-const wall4 = new THREE.Mesh(geometry2, material);
-wall4.position.z = 7;
-wall4.position.y = 2.5;
-scene.add(wall4);
+// const wall4 = new THREE.Mesh(geometry2, material);
+// wall4.position.z = 7;
+// wall4.position.y = 2.5;
+// scene.add(wall4);
 
 const wall5 = new THREE.Mesh(geometry3, material);
 wall5.position.z = 0;
@@ -108,6 +108,61 @@ gltfLoader.load("../models/scene.gltf", (gltfScene) => {
   gltfScene.scene.position.y = 0.3;
   scene.add(gltfScene.scene);
 });
+
+// rak
+const gltfLoader2 = new GLTFLoader();
+gltfLoader2.load("../models/rak.gltf", (gltfScene) => {
+  gltfScene.scene.position.z = -6.4;
+  gltfScene.scene.position.y = 0.1;
+  scene.add(gltfScene.scene);
+});
+
+const gltfLoader3 = new GLTFLoader();
+gltfLoader3.load("../models/rak.gltf", (gltfScene) => {
+  gltfScene.scene.position.z = -6.4;
+  gltfScene.scene.position.y = 0.1;
+  gltfScene.scene.position.x = 2;
+  scene.add(gltfScene.scene);
+});
+
+const gltfLoader4 = new GLTFLoader();
+gltfLoader4.load("../models/rak.gltf", (gltfScene) => {
+  gltfScene.scene.position.z = -6.4;
+  gltfScene.scene.position.y = 0.1;
+  gltfScene.scene.position.x = -2;
+  scene.add(gltfScene.scene);
+});
+
+// meja
+const gltfLoader5 = new GLTFLoader();
+gltfLoader5.load("../models/meja.gltf", (gltfScene) => {
+  gltfScene.scene.position.z = 0;
+  gltfScene.scene.position.y = 0.1;
+  gltfScene.scene.position.x = 6;
+  gltfScene.scene.rotation.y = 4.72;
+  scene.add(gltfScene.scene);
+});
+
+// kursi
+const gltfLoader6 = new GLTFLoader();
+gltfLoader6.load("../models/kursi.gltf", (gltfScene) => {
+  gltfScene.scene.position.z = 0;
+  gltfScene.scene.position.y = 0;
+  gltfScene.scene.position.x = 5;
+  gltfScene.scene.rotation.y = 4.72;
+  scene.add(gltfScene.scene);
+});
+
+// alat-alat
+const gltfLoader7 = new GLTFLoader();
+gltfLoader7.load("../models/alat1.gltf", (gltfScene) => {
+  gltfScene.scene.position.z = -0.5;
+  gltfScene.scene.position.y = 1.2;
+  gltfScene.scene.position.x = 5.8;
+  gltfScene.scene.rotation.y = 3.72;
+  scene.add(gltfScene.scene);
+});
+
 
 const size = 15;
 const divisions = 15;
