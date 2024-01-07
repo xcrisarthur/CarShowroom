@@ -163,6 +163,37 @@ gltfLoader7.load("../models/alat1.gltf", (gltfScene) => {
   scene.add(gltfScene.scene);
 });
 
+const gltfLoader8 = new GLTFLoader();
+gltfLoader8.load("../models/ban.gltf", (gltfScene) => {
+  gltfScene.scene.position.z = -5.9;
+  gltfScene.scene.position.y = 0.1;
+  gltfScene.scene.position.x = 6;
+  scene.add(gltfScene.scene);
+});
+
+const gltfLoader9 = new GLTFLoader();
+gltfLoader9.load("../models/ban.gltf", (gltfScene) => {
+  gltfScene.scene.position.z = -5.9;
+  gltfScene.scene.position.y = 0.5;
+  gltfScene.scene.position.x = 6;
+  scene.add(gltfScene.scene);
+});
+
+const gltfLoader10 = new GLTFLoader();
+gltfLoader10.load("../models/ban.gltf", (gltfScene) => {
+  gltfScene.scene.position.z = -5.9;
+  gltfScene.scene.position.y = 0.1;
+  gltfScene.scene.position.x = 4.93;
+  scene.add(gltfScene.scene);
+});
+
+const gltfLoader11 = new GLTFLoader();
+gltfLoader11.load("../models/ban.gltf", (gltfScene) => {
+  gltfScene.scene.position.z = -4.85;
+  gltfScene.scene.position.y = 0.1;
+  gltfScene.scene.position.x = 6;
+  scene.add(gltfScene.scene);
+});
 
 const size = 15;
 const divisions = 15;
