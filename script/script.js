@@ -12,8 +12,8 @@ const camera = new THREE.PerspectiveCamera(
 const renderer = new THREE.WebGLRenderer();
 
 renderer.setSize(window.innerWidth, window.innerHeight);
-camera.position.z = 6;
-camera.position.y = 5;
+// camera.position.x = 6;
+// camera.position.y = 5;
 
 const wall_texture = new THREE.TextureLoader().load("texture/wall.jpg");
 wall_texture.repeat = new THREE.Vector2(3, 3);
@@ -33,7 +33,13 @@ paving_texture.wrapT = THREE.RepeatWrapping;
 document.body.appendChild(renderer.domElement);
 
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.maxPolarAngle = 1.4;
+controls.maxPolarAngle = 1.2;
+
+const orbitTarget = new THREE.Vector3(0, 1.0, 0);
+controls.target.copy(orbitTarget);
+
+controls.autoRotate = true;
+controls.autoRotateSpeed = 1.0;
 
 const geometry = new THREE.BoxGeometry(1, 8, 15);
 const geometry2 = new THREE.BoxGeometry(15, 8, 1);
@@ -103,7 +109,7 @@ const pointLightHelper = new THREE.PointLightHelper(light, sphereSize);
 // scene.add(pointLightHelper);
 
 const gltfLoader = new GLTFLoader();
-gltfLoader.load("../models/scene.gltf", (gltfScene) => {
+gltfLoader.load("../models/Volkswagen Beetle (low poly).gltf", (gltfScene) => {
   gltfScene.scene.position.z = 2;
   gltfScene.scene.position.y = 0.3;
   scene.add(gltfScene.scene);
@@ -163,6 +169,8 @@ gltfLoader7.load("../models/alat1.gltf", (gltfScene) => {
   scene.add(gltfScene.scene);
 });
 
+camera.position.set(0, 0.5, 8);
+camera.lookAt(orbitTarget);
 
 const size = 15;
 const divisions = 15;
@@ -190,7 +198,7 @@ color();
 const draw = () => {
   // cylinder.rotation.y += 0.001;
   // camera.rotation.x += 0.1
-
+  controls.update();
   renderer.render(scene, camera);
   requestAnimationFrame(draw);
 };
