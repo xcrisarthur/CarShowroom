@@ -1,20 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <style>
-      body {
-        margin: 0;
-        overflow: auto;
-      }
-    </style>
-    <link rel="stylesheet" href="./css/style.css">
-    <!-- <script src="node_modules/three/examples/jsm/loaders/GLTFLoader.js"></script> -->
-  </head>
-  <body>
-    <script type="importmap">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Car Showroom</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: auto;
+    }
+  </style>
+  <link rel="stylesheet" href="./css/style.css" />
+  <!-- <script src="node_modules/three/examples/jsm/loaders/GLTFLoader.js"></script> -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+</head>
+
+<body>
+  <script type="importmap">
       {
         "imports": {
           "three": "./node_modules/three/build/three.module.js",
@@ -22,6 +27,41 @@
         }
       }
     </script>
-    <script type="module" src="./script/script.js"></script>
-  </body>
+  <script type="module" src="./script/script.js"></script>
+  <div id="menukiri">
+    <button id="fsButtonLeft" type="button" class="btn btn-primary">Full Screen</button>
+    <button id="pauseButtonLeft" type="button" class="btn btn-primary">Pause</button>
+    <button id="homeButtonLeft" type="button" class="btn btn-primary">Home</button>
+  </div>
+  <div id="menukanan">
+    <button id="twtButtonRight" type="button" class="btn btn-primary">X / Twitter</button>
+    <button id="googleButtonRight" type="button" class="btn btn-dark">Github</button>
+    <button id="fbButtonRight" type="button" class="btn btn-primary">Facebook</button>
+  </div>
+
+  <div id="menubawah" class="mb-3">
+    <div class="btn-group">
+      <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        Select Car Model
+      </button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="#">Car 1</a></li>
+        <li><a class="dropdown-item" href="#">Car 2</a></li>
+        <li><a class="dropdown-item" href="#">Car 3</a></li>
+      </ul>
+    </div>
+
+    <button id="carColorButton" type="button" class="btn btn-primary">Car Color</button>
+    <input type="color" id="colorPicker" style="display: none" />
+
+    <button id="wheelColorButton" type="button" class="btn btn-primary">Wheel Color</button>
+
+    <button id="soundButton" type="button" class="btn btn-primary">Sound</button>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+
+</body>
+
 </html>
