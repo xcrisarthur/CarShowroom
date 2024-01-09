@@ -138,16 +138,89 @@ scene.add(
 // light4.position.set(0, 1, -3);
 // scene.add(light4);
 
+document.addEventListener("DOMContentLoaded", function () {
+  const fsButton = document.querySelector('[data-bs-title="Full Screen"]');
+  let isFullScreen = false;
+
+  fsButton.addEventListener("click", function () {
+    if (document.fullscreenEnabled) {
+      if (!isFullScreen) {
+        document.documentElement.requestFullscreen();
+        isFullScreen = true;
+      } else {
+        document.exitFullscreen();
+        isFullScreen = false;
+      }
+    } else {
+      console.error("Full screen is not supported in this browser.");
+    }
+  });
+});
+
 const sphereSize = 1;
 const pointLightHelper = new THREE.PointLightHelper(light, sphereSize);
 scene.add(pointLightHelper);
 
-const gltfLoader = new GLTFLoader();
-gltfLoader.load("../models/scene.gltf", (gltfScene) => {
-  gltfScene.scene.position.z = 2;
-  gltfScene.scene.position.y = 0.3;
-  scene.add(gltfScene.scene);
+let currentCarModel = null;
+
+function hideCarModels() {
+  if (currentCarModel) {
+    scene.remove(currentCarModel.scene);
+  }
+}
+
+function loadCarModel0() {
+  hideCarModels();
+}
+
+function loadCarModel1() {
+  hideCarModels();
+  const gltfLoaderCar1 = new GLTFLoader();
+  gltfLoaderCar1.load("../models/scene.gltf", (gltfScene) => {
+    gltfScene.scene.position.z = 2;
+    gltfScene.scene.position.y = 0.3;
+    scene.add(gltfScene.scene);
+    currentCarModel = gltfScene;
+  });
+}
+
+function loadCarModel2() {
+  hideCarModels();
+  const gltfLoaderCar2 = new GLTFLoader();
+  gltfLoaderCar2.load("../models/alfa_romeo_giulia/scene.gltf", (gltfScene) => {
+    gltfScene.scene.position.z = 0;
+    gltfScene.scene.position.y = 1;
+    scene.add(gltfScene.scene);
+    currentCarModel = gltfScene;
+  });
+}
+
+carSelect.addEventListener("change", function () {
+  const selectedCar = carSelect.value;
+
+  // Tambahkan model yang sesuai berdasarkan pilihan
+  if (selectedCar === "0") {
+    loadCarModel0();
+  } else if (selectedCar === "1") {
+    loadCarModel1();
+  } else if (selectedCar === "2") {
+    loadCarModel2();
+  }
 });
+
+// const gltfLoaderCar1 = new GLTFLoader();
+// gltfLoaderCar1.load("../models/scene.gltf", (gltfScene) => {
+//   gltfScene.scene.position.z = 2;
+//   gltfScene.scene.position.y = 0.3;
+//   scene.add(gltfScene.scene);
+// });
+
+// const gltfLoaderCar2 = new GLTFLoader();
+// gltfLoaderCar2.load("../models/alfa_romeo_giulia/scene.gltf", (gltfScene) => {
+//   gltfScene.scene.position.z = 0;
+//   gltfScene.scene.position.y = 1;
+//   scene.add(gltfScene.scene);
+// });
 
 // rak
 const gltfLoader2 = new GLTFLoader();
