@@ -1,6 +1,7 @@
 import * as THREE from "../node_modules/three/build/three.module.js";
 import { OrbitControls } from "../node_modules/three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { Renderer } from "./Renderer.js";
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
@@ -162,7 +163,7 @@ const pointLightHelper = new THREE.PointLightHelper(light, sphereSize);
 scene.add(pointLightHelper);
 
 let currentCarModel = null;
-
+//
 function hideCarModels() {
   if (currentCarModel) {
     scene.remove(currentCarModel.scene);
@@ -175,24 +176,27 @@ function loadCarModel0() {
 
 function loadCarModel1() {
   hideCarModels();
-  const gltfLoaderCar1 = new GLTFLoader();
-  gltfLoaderCar1.load("../models/scene.gltf", (gltfScene) => {
-    gltfScene.scene.position.z = 2;
-    gltfScene.scene.position.y = 0.3;
-    scene.add(gltfScene.scene);
-    currentCarModel = gltfScene;
-  });
+
+  Renderer("../models/scene.gltf", 0.3, 2);
+  // const gltfLoaderCar1 = new GLTFLoader();
+  // gltfLoaderCar1.load("../models/scene.gltf", (gltfScene) => {
+  //   gltfScene.scene.position.z = 2;
+  //   gltfScene.scene.position.y = 0.3;
+  //   scene.add(gltfScene.scene);
+  //   currentCarModel = gltfScene;
+  // });
 }
 
 function loadCarModel2() {
   hideCarModels();
-  const gltfLoaderCar2 = new GLTFLoader();
-  gltfLoaderCar2.load("../models/alfa_romeo_giulia/scene.gltf", (gltfScene) => {
-    gltfScene.scene.position.z = 0;
-    gltfScene.scene.position.y = 1;
-    scene.add(gltfScene.scene);
-    currentCarModel = gltfScene;
-  });
+  Renderer("../models/alfa_romeo_giulia/scene.gltf", 1, 0);
+  // const gltfLoaderCar2 = new GLTFLoader();
+  // gltfLoaderCar2.load("../models/alfa_romeo_giulia/scene.gltf", (gltfScene) => {
+  //   gltfScene.scene.position.z = 0;
+  //   gltfScene.scene.position.y = 1;
+  //   scene.add(gltfScene.scene);
+  //   currentCarModel = gltfScene;
+  // });
 }
 
 carSelect.addEventListener("change", function () {
