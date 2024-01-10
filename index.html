@@ -1,25 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Car Showroom</title>
+    <style>
+      body {
+        margin: 0;
+        overflow: auto;
+      }
+    </style>
+    <link rel="stylesheet" href="./css/style.css" />
+    <!-- <script src="node_modules/three/examples/jsm/loaders/GLTFLoader.js"></script> -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Car Showroom</title>
-  <style>
-    body {
-      margin: 0;
-      overflow: auto;
-    }
-  </style>
-  <link rel="stylesheet" href="./css/style.css" />
-  <!-- <script src="node_modules/three/examples/jsm/loaders/GLTFLoader.js"></script> -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+      /* Add your CSS styles here */
+      #zoomInButton,
+      #zoomOutButton {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: 30px;
+        height: 30px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        outline: none;
+        margin-right: 5px;
+      }
 
-</head>
+      #zoomOutButton {
+        top: 50px;
+      }
+    </style>
 
-<body>
-  <script type="importmap">
+    <script src="node_modules/dat.gui/build/dat.gui.js"></script>
+  </head>
+
+  <body>
+    <script type="importmap">
       {
         "imports": {
           "three": "./node_modules/three/build/three.module.js",
@@ -27,41 +55,176 @@
         }
       }
     </script>
-  <script type="module" src="./script/script.js"></script>
-  <div id="menukiri">
-    <button id="fsButtonLeft" type="button" class="btn btn-primary">Full Screen</button>
-    <button id="pauseButtonLeft" type="button" class="btn btn-primary">Pause</button>
-    <button id="homeButtonLeft" type="button" class="btn btn-primary">Home</button>
-  </div>
-  <div id="menukanan">
-    <button id="twtButtonRight" type="button" class="btn btn-primary">X / Twitter</button>
-    <button id="googleButtonRight" type="button" class="btn btn-dark">Github</button>
-    <button id="fbButtonRight" type="button" class="btn btn-primary">Facebook</button>
-  </div>
+    <script type="module" src="./script/script.js"></script>
+    <div id="menukiri">
+      <!-- <button type="button" class="btn btn-dark" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Instructions">
+      <svg xmlns="http://www.w3.org/2000/svg" height="25" width="25" viewBox="0 0 512 512"><path fill="#ffffff" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>
+    </button> -->
 
-  <div id="menubawah" class="mb-3">
-    <div class="btn-group">
-      <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-        Select Car Model
+      <a
+        class=""
+        data-bs-toggle="offcanvas"
+        href="#offcanvasExample"
+        role="button"
+        aria-controls="offcanvasExample"
+      >
+        <button
+          type="button"
+          class="btn btn-dark"
+          data-bs-toggle="tooltip"
+          data-bs-placement="bottom"
+          data-bs-title="Instructions"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="20"
+            width="20"
+            viewBox="0 0 512 512"
+          >
+            <path
+              fill="#ffffff"
+              d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"
+            />
+          </svg>
+        </button>
+      </a>
+
+      <div
+        class="offcanvas offcanvas-start bg-dark text-white"
+        tabindex="-1"
+        id="offcanvasExample"
+        aria-labelledby="offcanvasExampleLabel"
+      >
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasExampleLabel">
+            Instructions
+          </h5>
+          <button
+            type="button"
+            class="btn-close bg-light"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="offcanvas-body">
+          <div>
+            <img
+              src="./img/Screenshot_102.png"
+              alt=""
+              srcset=""
+              style="width: 100%"
+            />
+            <h3>1. Middle Click</h3>
+            <h5>Use This For Zoom-in or Zoom-out</h5>
+          </div>
+        </div>
+      </div>
+      <!-- <button id="fsButtonLeft" type="button" class="btn btn-primary">Full Screen</button> -->
+      <!-- <button id="pauseButtonLeft" type="button" class="btn btn-primary">Pause</button> -->
+      <!-- <button id="homeButtonLeft" type="button" class="btn btn-primary">Home</button> -->
+    </div>
+    <div id="menukanan">
+      <!-- <button id="twtButtonRight" type="button" class="btn btn-primary">X / Twitter</button> -->
+      <button
+        id="fsButtonLeft"
+        type="button"
+        class="btn btn-dark"
+        data-bs-toggle="tooltip"
+        data-bs-placement="bottom"
+        data-bs-title="Full Screen"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="16"
+          width="14"
+          viewBox="0 0 448 512"
+        >
+          <path
+            fill="#ffffff"
+            d="M32 32C14.3 32 0 46.3 0 64v96c0 17.7 14.3 32 32 32s32-14.3 32-32V96h64c17.7 0 32-14.3 32-32s-14.3-32-32-32H32zM64 352c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7 14.3 32 32 32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H64V352zM320 32c-17.7 0-32 14.3-32 32s14.3 32 32 32h64v64c0 17.7 14.3 32 32 32s32-14.3 32-32V64c0-17.7-14.3-32-32-32H320zM448 352c0-17.7-14.3-32-32-32s-32 14.3-32 32v64H320c-17.7 0-32 14.3-32 32s14.3 32 32 32h96c17.7 0 32-14.3 32-32V352z"
+          />
+        </svg>
       </button>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">Car 1</a></li>
-        <li><a class="dropdown-item" href="#">Car 2</a></li>
-        <li><a class="dropdown-item" href="#">Car 3</a></li>
-      </ul>
+
+      <a
+        href="https://github.com/xcrisarthur/CarShowroom"
+        style="text-decoration: none; color: white"
+        target="_blank"
+      >
+        <button id="googleButtonRight" type="button" class="btn btn-dark">
+          Github
+        </button>
+      </a>
+      <!-- <button id="fbButtonRight" type="button" class="btn btn-primary">Facebook</button> -->
+
+      <!-- Add the zoom buttons -->
     </div>
 
-    <button id="carColorButton" type="button" class="btn btn-primary">Car Color</button>
-    <input type="color" id="colorPicker" style="display: none" />
+    <div id="menubawah" class="mb-3">
+      <div class="btn-group">
+        <button
+          type="button"
+          class="btn btn-primary dropdown-toggle"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Choose Car
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">Car 1</a></li>
+          <li><a class="dropdown-item" href="#">Car 2</a></li>
+          <li><a class="dropdown-item" href="#">Car 3</a></li>
+        </ul>
+      </div>
 
-    <button id="wheelColorButton" type="button" class="btn btn-primary">Wheel Color</button>
+      <button id="carColorButton" type="button" class="btn btn-primary">
+        Car Color
+      </button>
+      <!-- <input type="color" id="colorPicker" style="display: none" /> -->
+      <button id="wheelColorButton" type="button" class="btn btn-primary">
+        Wheel Color
+      </button>
+      <button id="soundButton" type="button" class="btn btn-primary">
+        Detailed Information
+      </button>
+      <button id="soundButton" type="button" class="btn btn-primary">
+        Interior
+      </button>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
 
-    <button id="soundButton" type="button" class="btn btn-primary">Sound</button>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-    crossorigin="anonymous"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const fsButton = document.querySelector(
+          '[data-bs-title="Full Screen"]'
+        );
+        let isFullScreen = false;
 
-</body>
+        fsButton.addEventListener("click", function () {
+          if (document.fullscreenEnabled) {
+            if (!isFullScreen) {
+              document.documentElement.requestFullscreen();
+              isFullScreen = true;
+            } else {
+              document.exitFullscreen();
+              isFullScreen = false;
+            }
+          } else {
+            console.error("Full screen is not supported in this browser.");
+          }
+        });
+      });
 
+      const tooltipTriggerList = document.querySelectorAll(
+        '[data-bs-toggle="tooltip"]'
+      );
+      const tooltipList = [...tooltipTriggerList].map(
+        (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
+      );
+    </script>
+  </body>
 </html>
