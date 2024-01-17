@@ -1,7 +1,8 @@
 import * as THREE from "../node_modules/three/build/three.module.js";
 import { OrbitControls } from "../node_modules/three/examples/jsm/controls/OrbitControls.js";
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { Renderer } from "./Renderer.js";
+import { renderModel, renderTexture, spotlightRenderer } from "./Renderer.js";
+import { FontLoader } from "../modules/FontLoader.js";
+import { TextGeometry } from "../modules/TextGeometry.js";
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
@@ -11,133 +12,251 @@ const camera = new THREE.PerspectiveCamera(
   100
 );
 const renderer = new THREE.WebGLRenderer();
-
 renderer.setSize(window.innerWidth, window.innerHeight);
-// camera.position.x = 6;
-// camera.position.y = 5;
 
-const wall_texture = new THREE.TextureLoader().load("texture/wall.jpg");
-wall_texture.repeat = new THREE.Vector2(3, 3);
-wall_texture.wrapS = THREE.RepeatWrapping;
-wall_texture.wrapT = THREE.RepeatWrapping;
-
-const metal_texture = new THREE.TextureLoader().load("texture/metal.jpg");
-metal_texture.repeat = new THREE.Vector2(2, 2);
-metal_texture.wrapS = THREE.RepeatWrapping;
-metal_texture.wrapT = THREE.RepeatWrapping;
-
-const paving_texture = new THREE.TextureLoader().load("texture/paving.jpg");
-paving_texture.repeat = new THREE.Vector2(10, 10);
-paving_texture.wrapS = THREE.RepeatWrapping;
-paving_texture.wrapT = THREE.RepeatWrapping;
-
-document.body.appendChild(renderer.domElement);
-
+camera.position.set(0, 2.5, 7);
+camera.position.y = 4;
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.maxPolarAngle = 1.2;
+controls.maxPolarAngle = 1.3;
 
 const orbitTarget = new THREE.Vector3(0, 0.5, 0);
 controls.target.copy(orbitTarget);
-
 controls.autoRotate = true;
 controls.autoRotateSpeed = 1.0;
+camera.lookAt(orbitTarget);
 
-const geometry = new THREE.BoxGeometry(1, 8, 15);
-const geometry2 = new THREE.BoxGeometry(15, 8, 1);
-const geometry3 = new THREE.BoxGeometry(15, 1, 15);
-const geometry4 = new THREE.BoxGeometry(1, 1, 1);
+document.body.appendChild(renderer.domElement);
 
-const material = new THREE.MeshPhongMaterial({ map: wall_texture });
+// Wall
+renderTexture({
+  nameTexture: "wall",
+  modelPath: "texture/wall.jpg",
+  repeatVectorX: 3,
+  repeatVectorY: 3,
+  positionX: 7,
+  positionY: 2.5,
+  positionZ: 0,
+  boxWidth: 1,
+  boxHeight: 8,
+  boxDepth: 15,
+  cylinderRadiusTop: 0,
+  cylinderRadiusBottom: 0,
+  cylinderHeight: 0,
+  cylinderRadialSegments: 0,
+  scene: scene,
+});
 
-const wall1 = new THREE.Mesh(geometry, material);
-wall1.position.x = 7;
-wall1.position.y = 2.5;
-scene.add(wall1);
+renderTexture({
+  nameTexture: "wall",
+  modelPath: "texture/wall.jpg",
+  repeatVectorX: 3,
+  repeatVectorY: 3,
+  positionX: -7,
+  positionY: 2.5,
+  positionZ: 0,
+  boxWidth: 1,
+  boxHeight: 8,
+  boxDepth: 15,
+  cylinderRadiusTop: 0,
+  cylinderRadiusBottom: 0,
+  cylinderHeight: 0,
+  cylinderRadialSegments: 0,
+  scene: scene,
+});
 
-const wall2 = new THREE.Mesh(geometry, material);
-wall2.position.x = -7;
-wall2.position.y = 2.5;
-scene.add(wall2);
+renderTexture({
+  nameTexture: "wall",
+  modelPath: "texture/wall.jpg",
+  repeatVectorX: 3,
+  repeatVectorY: 3,
+  positionX: 0,
+  positionY: 2.5,
+  positionZ: -7,
+  boxWidth: 15,
+  boxHeight: 8,
+  boxDepth: 1,
+  cylinderRadiusTop: 0,
+  cylinderRadiusBottom: 0,
+  cylinderHeight: 0,
+  cylinderRadialSegments: 0,
+  scene: scene,
+});
 
-const wall3 = new THREE.Mesh(geometry2, material);
-wall3.position.z = -7;
-wall3.position.y = 2.5;
-scene.add(wall3);
+renderTexture({
+  nameTexture: "wall",
+  modelPath: "texture/wall.jpg",
+  repeatVectorX: 3,
+  repeatVectorY: 3,
+  positionX: 0,
+  positionY: 2.5,
+  positionZ: 7,
+  boxWidth: 15,
+  boxHeight: 8,
+  boxDepth: 1,
+  cylinderRadiusTop: 0,
+  cylinderRadiusBottom: 0,
+  cylinderHeight: 0,
+  cylinderRadialSegments: 0,
+  scene: scene,
+});
 
-// const wall4 = new THREE.Mesh(geometry2, material);
-// wall4.position.z = 7;
-// wall4.position.y = 2.5;
-// scene.add(wall4);
+renderTexture({
+  nameTexture: "wall",
+  modelPath: "texture/wall.jpg",
+  repeatVectorX: 3,
+  repeatVectorY: 3,
+  positionX: 0,
+  positionY: 7,
+  positionZ: 0,
+  boxWidth: 15,
+  boxHeight: 1,
+  boxDepth: 15,
+  cylinderRadiusTop: 0,
+  cylinderRadiusBottom: 0,
+  cylinderHeight: 0,
+  cylinderRadialSegments: 0,
+  scene: scene,
+});
 
-const wall5 = new THREE.Mesh(geometry3, material);
-wall5.position.z = 0;
-wall5.position.y = 7;
-scene.add(wall5);
+// Floor
+renderTexture({
+  nameTexture: "wall",
+  modelPath: "texture/paving.jpg",
+  repeatVectorX: 10,
+  repeatVectorY: 10,
+  positionX: 0,
+  positionY: -0.4,
+  positionZ: 0,
+  boxWidth: 15,
+  boxHeight: 1,
+  boxDepth: 15,
+  cylinderRadiusTop: 0,
+  cylinderRadiusBottom: 0,
+  cylinderHeight: 0,
+  cylinderRadialSegments: 0,
+  scene: scene,
+});
 
-const wall6 = new THREE.Mesh(
-  geometry3,
-  new THREE.MeshPhongMaterial({ map: paving_texture })
-);
-wall6.position.z = 0;
-wall6.position.y = -0.4;
-scene.add(wall6); // floor
+// Metal
+renderTexture({
+  nameTexture: "Cylinder",
+  modelPath: "texture/metal.jpg",
+  repeatVectorX: 3,
+  repeatVectorY: 3,
+  positionX: 0,
+  positionY: -0.4,
+  positionZ: 0,
+  boxWidth: 0,
+  boxHeight: 0,
+  boxDepth: 0,
+  cylinderRadiusTop: 3,
+  cylinderRadiusBottom: 3,
+  cylinderHeight: 0.5,
+  cylinderRadialSegments: 32,
+  scene: scene,
+});
 
-const geometryCylinder = new THREE.CylinderGeometry(3, 3, 0.5, 32);
-const materialCylinder = new THREE.MeshPhongMaterial({ map: metal_texture });
-const cylinder = new THREE.Mesh(geometryCylinder, materialCylinder);
-scene.add(cylinder);
+spotlightRenderer({
+  color: 0xffffff,
+  intensity: 100,
+  distance: 5,
+  positionX: 0,
+  positionY: 5,
+  positionZ: 0,
+  positionTargetX: 0,
+  positionTargetY: 1,
+  positionTargetZ: 0,
+  scene,
+});
+
+spotlightRenderer({
+  color: 0xffffff,
+  intensity: 100,
+  distance: 5,
+  positionX: 3,
+  positionY: 0.5,
+  positionZ: 3,
+  positionTargetX: 0,
+  positionTargetY: 1,
+  positionTargetZ: 0,
+  scene,
+});
+
+spotlightRenderer({
+  color: 0xffffff,
+  intensity: 100,
+  distance: 5,
+  positionX: -3,
+  positionY: 0.5,
+  positionZ: 3,
+  positionTargetX: 0,
+  positionTargetY: 1,
+  positionTargetZ: 0,
+  scene,
+});
+
+spotlightRenderer({
+  color: 0xffffff,
+  intensity: 100,
+  distance: 5,
+  positionX: 3,
+  positionY: 0.5,
+  positionZ: -3,
+  positionTargetX: 0,
+  positionTargetY: 0.5,
+  positionTargetZ: -0.5,
+  scene,
+});
+
+spotlightRenderer({
+  color: 0xffffff,
+  intensity: 100,
+  distance: 5,
+  positionX: -3,
+  positionY: 0.5,
+  positionZ: -3,
+  positionTargetX: 0,
+  positionTargetY: 0.5,
+  positionTargetZ: -0.5,
+  scene,
+});
+
+// rak
+renderModel("../models/rak.gltf", 0, 0.1, -6.4, 0, 0, 0, scene);
+renderModel("../models/rak.gltf", 2, 0.1, -6.4, 0, 0, 0, scene);
+renderModel("../models/rak.gltf", -2, 0.1, -6.4, 0, 0, 0, scene);
+
+// meja
+renderModel("../models/meja.gltf", 6, 0.1, 0, 0, 4.72, 0, scene);
+
+// kursi
+renderModel("../models/kursi.gltf", 5, 0, 0, 0, 4.72, 0, scene);
+
+// alat-alat
+renderModel("../models/alat1.gltf", 5.8, 1.2, -0.5, 0, 3.72, 0, scene);
+
+// ban
+renderModel("../models/ban.gltf", 6, 0.1, -5.9, 0, 0, 0, scene);
+renderModel("../models/ban.gltf", 6, 0.5, -5.9, 0, 0, 0, scene);
+renderModel("../models/ban.gltf", 4.93, 0.1, -5.9, 0, 0, 0, scene);
+renderModel("../models/ban.gltf", 6, 0.1, -4.85, 0, 0, 0, scene);
 
 const light = new THREE.PointLight(0xffffff, 100, 100);
 light.position.set(0, 5, 0);
 scene.add(light);
 
-const spotlight0 = new THREE.SpotLight(0xffffff, 100, 5);
-spotlight0.position.set(0, 5, 0);
-spotlight0.target.position.set(0, 1, 0);
-spotlight0.angle = Math.PI / 6;
-
-const spotlight1 = new THREE.SpotLight(0xffffff, 100, 10);
-spotlight1.position.set(3, 0.5, 3);
-spotlight1.target.position.set(0, 1, 0);
-spotlight1.angle = Math.PI / 6;
-
-const spotlight2 = new THREE.SpotLight(0xffffff, 100, 10);
-spotlight2.position.set(-3, 0.5, 3);
-spotlight2.target.position.set(0, 1, 0);
-spotlight2.angle = Math.PI / 6;
-
-const spotlight3 = new THREE.SpotLight(0xffffff, 100, 10);
-spotlight3.position.set(3, 0.5, -3);
-spotlight3.target.position.set(0, 0.5, -0.5);
-spotlight3.angle = Math.PI / 6;
-
-const spotlight4 = new THREE.SpotLight(0xffffff, 100, 10);
-spotlight4.position.set(-3, 0.5, -3);
-spotlight4.target.position.set(0, 0.5, -0.5);
-spotlight4.angle = Math.PI / 6;
-
-scene.add(spotlight0, spotlight1, spotlight2, spotlight3, spotlight4);
-scene.add(
-  spotlight0,
-  spotlight1.target,
-  spotlight2.target,
-  spotlight3.target,
-  spotlight4.target
-);
-
-// const spotLightHelper = new THREE.SpotLightHelper( spotlight0 );
-// scene.add( spotLightHelper );
-// const light2 = new THREE.PointLight(0xffffff, 100, 100);
-// light2.position.set(-2.5, 2, 0);
-// scene.add(light2);
-
-// const light3 = new THREE.PointLight(0xffffff, 100, 100);
-// light3.position.set(0, 3, 0);
-// scene.add(light3);
-
-// const light4 = new THREE.PointLight(0xffffff, 100, 100);
-// light4.position.set(0, 1, -3);
-// scene.add(light4);
+const pointLightHelper = new THREE.PointLightHelper(light, 1);
+scene.add(pointLightHelper);
+const lampButton = document.querySelector('[data-bs-title="Lamp"]');
+let isLightAdded = false;
+lampButton.addEventListener("click", function () {
+  if (isLightAdded) {
+    scene.remove(light);
+  } else {
+    scene.add(light);
+  }
+  isLightAdded = !isLightAdded;
+});
 
 document.addEventListener("DOMContentLoaded", function () {
   const fsButton = document.querySelector('[data-bs-title="Full Screen"]');
@@ -158,187 +277,327 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-const sphereSize = 1;
-const pointLightHelper = new THREE.PointLightHelper(light, sphereSize);
-scene.add(pointLightHelper);
 
-let currentCarModel = null;
-//
-function hideCarModels() {
+let currentCarModel;
+let selectedCar = "0"; // Assuming a default value, change it as needed
+
+const carColorButton = document.getElementById("carColorButton");
+carColorButton.addEventListener("change", function () {
+    const selectedColor = carColorButton.value;
+    changeCarColor(selectedColor);
+});
+
+
+function changeCarColor(color) {
   if (currentCarModel) {
-    scene.remove(currentCarModel.scene);
+      switch (color) {
+          case "merah":
+              if (selectedCar === "1") {
+                  const carMaterial = currentCarModel.getObjectByName("Object_400").material;
+                  carMaterial.color.setHex(0xff0000);
+              } else if (selectedCar === "2") {
+                  const carMaterial = currentCarModel.getObjectByName("ID3358").material;
+                  carMaterial.color.setHex(0xff0000);
+              }
+              break;
+          case "biru":
+              if (selectedCar === "1") {
+                  const carMaterial = currentCarModel.getObjectByName("Object_400").material;
+                  carMaterial.color.setHex(0x0000ff);
+              } else if (selectedCar === "2") {
+                  const carMaterial = currentCarModel.getObjectByName("ID3358").material;
+                  carMaterial.color.setHex(0x0000ff);
+              }
+              break;
+          case "hijau":
+              if (selectedCar === "1") {
+                  const carMaterial = currentCarModel.getObjectByName("Object_400").material;
+                  carMaterial.color.setHex(0x00ff00);
+              } else if (selectedCar === "2") {
+                  const carMaterial = currentCarModel.getObjectByName("ID3358").material;
+                  carMaterial.color.setHex(0x00ff00);
+              }
+              break;
+          default:
+              // Default color or handle other cases
+              break;
+      }
   }
 }
 
+
+// Add the following function to enable/disable the car color selection
+function toggleCarColorSelection(enable) {
+    carColorButton.disabled = !enable;
+}
+
+// Modify the loadCarModel functions to call toggleCarColorSelection accordingly
 function loadCarModel0() {
-  hideCarModels();
+    if (currentCarModel) {
+        scene.remove(currentCarModel);
+    }
+    toggleCarColorSelection(false);
 }
 
 function loadCarModel1() {
-  hideCarModels();
-
-  Renderer("../models/scene.gltf", 0.3, 2);
-  // const gltfLoaderCar1 = new GLTFLoader();
-  // gltfLoaderCar1.load("../models/scene.gltf", (gltfScene) => {
-  //   gltfScene.scene.position.z = 2;
-  //   gltfScene.scene.position.y = 0.3;
-  //   scene.add(gltfScene.scene);
-  //   currentCarModel = gltfScene;
-  // });
+    if (currentCarModel) {
+        scene.remove(currentCarModel);
+    }
+    toggleCarColorSelection(true);
+    renderModel("../models/scene.gltf", 0, 0.3, 2, 0, 0, 0, scene)
+        .then((loadedCarModel) => {
+            currentCarModel = loadedCarModel.scene;
+            currentCarModel.traverse((object) => {
+              console.log(object.name);
+            });
+        })
+        .catch((error) => {
+            console.error("Error loading the model:", error);
+        });
 }
 
 function loadCarModel2() {
-  hideCarModels();
-  Renderer("../models/alfa_romeo_giulia/scene.gltf", 1, 0);
-  // const gltfLoaderCar2 = new GLTFLoader();
-  // gltfLoaderCar2.load("../models/alfa_romeo_giulia/scene.gltf", (gltfScene) => {
-  //   gltfScene.scene.position.z = 0;
-  //   gltfScene.scene.position.y = 1;
-  //   scene.add(gltfScene.scene);
-  //   currentCarModel = gltfScene;
-  // });
+    toggleCarColorSelection(true);
+    renderModel("../models/alfa_romeo_giulia/scene.gltf", 0, 1, 0, 0, 0, 0, scene);
 }
 
-carSelect.addEventListener("change", function () {
-  const selectedCar = carSelect.value;
+function loadCarModel3() {
+    if (currentCarModel) {
+        scene.remove(currentCarModel);
+    }
+    toggleCarColorSelection(true);
+    renderModel("../models/mersi/mersi.gltf", 0, 0.2, 0, 0, 0, 0, scene)
+        .then((loadedCarModel) => {
+            currentCarModel = loadedCarModel.scene;
+            // Menampilkan nama objek dari model mobil
+      currentCarModel.traverse((object) => {
+        console.log(object.name);
+      });
+            // const initialColor = 0xff0000;
+            // currentCarModel.getObjectByName("ID3358").material.color.setHex(initialColor);
+        })
+        .catch((error) => {
+            console.error("Error loading the model:", error);
+        });
+}
 
-  // Tambahkan model yang sesuai berdasarkan pilihan
+// function loadCarModel0() {
+//   if (currentCarModel) {
+//     scene.remove(currentCarModel);
+//   }
+// }
+
+// function loadCarModel1() {
+//   if (currentCarModel) {
+//     scene.remove(currentCarModel);
+//   }
+
+//   renderModel("../models/scene.gltf", 0, 0.3, 2, 0, 0, 0, scene)
+//     .then((loadedCarModel) => {
+//       currentCarModel = loadedCarModel.scene;
+//     })
+//     .catch((error) => {
+//       console.error("Error loading the model:", error);
+//     });
+// }
+
+// function loadCarModel2() {
+//   renderModel(
+//     "../models/alfa_romeo_giulia/scene.gltf",
+//     0,
+//     1,
+//     0,
+//     0,
+//     0,
+//     0,
+//     scene
+//   );
+// }
+
+// function loadCarModel3() {
+//   if (currentCarModel) {
+//     scene.remove(currentCarModel);
+//   }
+
+//   renderModel("../models/mersi/mersi.gltf", 0, 0.2, 0, 0, 0, 0, scene)
+//     .then((loadedCarModel) => {
+//       currentCarModel = loadedCarModel.scene;
+//       const initialColor = 0xff0000;
+//       currentCarModel.getObjectByName("ID3358").material.color.setHex(initialColor);
+//     })
+//     .catch((error) => {
+//       console.error("Error loading the model:", error);
+//     });
+// }
+
+// Pemilihan mobil event listener
+carSelect.addEventListener("change", function () {
+  selectedCar = carSelect.value;
   if (selectedCar === "0") {
-    loadCarModel0();
+      loadCarModel0();
+      updateText(selectedCar);
   } else if (selectedCar === "1") {
-    loadCarModel1();
+      loadCarModel1();
+      updateText(selectedCar);
   } else if (selectedCar === "2") {
-    loadCarModel2();
+      loadCarModel3();
+      updateText(selectedCar);
   }
 });
 
-// const gltfLoaderCar1 = new GLTFLoader();
-// gltfLoaderCar1.load("../models/scene.gltf", (gltfScene) => {
-//   gltfScene.scene.position.z = 2;
-//   gltfScene.scene.position.y = 0.3;
-//   scene.add(gltfScene.scene);
-// });
 
-// const gltfLoaderCar2 = new GLTFLoader();
-// gltfLoaderCar2.load("../models/alfa_romeo_giulia/scene.gltf", (gltfScene) => {
-//   gltfScene.scene.position.z = 0;
-//   gltfScene.scene.position.y = 1;
-//   scene.add(gltfScene.scene);
-// });
+let textmesh;
+const loader = new FontLoader();
 
-// rak
-const gltfLoader2 = new GLTFLoader();
-gltfLoader2.load("../models/rak.gltf", (gltfScene) => {
-  gltfScene.scene.position.z = -6.4;
-  gltfScene.scene.position.y = 0.1;
-  scene.add(gltfScene.scene);
-});
+// Fungsi untuk memperbarui teks berdasarkan pilihan mobil
+function updateText(carType) {
+  if (textmesh) {
+    scene.remove(textmesh);
+  }
+  if (carType == "0") {
+    let text = "choose car!";
+    loader.load("../fonts/Bungee Spice Regular_Regular.json", function (font) {
+      const tGeometry = new TextGeometry(text, {
+        font: font,
+        size: 0.5,
+        height: 0.5,
+        curveSegments: 1,
+        bevelEnabked: true,
+        bevelThickness: 100,
+        bevelSize: 100,
+        bevelOffset: 100,
+        bevelSegments: 100,
+      });
 
-const gltfLoader3 = new GLTFLoader();
-gltfLoader3.load("../models/rak.gltf", (gltfScene) => {
-  gltfScene.scene.position.z = -6.4;
-  gltfScene.scene.position.y = 0.1;
-  gltfScene.scene.position.x = 2;
-  scene.add(gltfScene.scene);
-});
-
-const gltfLoader4 = new GLTFLoader();
-gltfLoader4.load("../models/rak.gltf", (gltfScene) => {
-  gltfScene.scene.position.z = -6.4;
-  gltfScene.scene.position.y = 0.1;
-  gltfScene.scene.position.x = -2;
-  scene.add(gltfScene.scene);
-});
-
-// meja
-const gltfLoader5 = new GLTFLoader();
-gltfLoader5.load("../models/meja.gltf", (gltfScene) => {
-  gltfScene.scene.position.z = 0;
-  gltfScene.scene.position.y = 0.1;
-  gltfScene.scene.position.x = 6;
-  gltfScene.scene.rotation.y = 4.72;
-  scene.add(gltfScene.scene);
-});
-
-// kursi
-const gltfLoader6 = new GLTFLoader();
-gltfLoader6.load("../models/kursi.gltf", (gltfScene) => {
-  gltfScene.scene.position.z = 0;
-  gltfScene.scene.position.y = 0;
-  gltfScene.scene.position.x = 5;
-  gltfScene.scene.rotation.y = 4.72;
-  scene.add(gltfScene.scene);
-});
-
-// alat-alat
-const gltfLoader7 = new GLTFLoader();
-gltfLoader7.load("../models/alat1.gltf", (gltfScene) => {
-  gltfScene.scene.position.z = -0.5;
-  gltfScene.scene.position.y = 1.2;
-  gltfScene.scene.position.x = 5.8;
-  gltfScene.scene.rotation.y = 3.72;
-  scene.add(gltfScene.scene);
-});
-
-camera.position.set(0, 0.5, 6);
-camera.lookAt(orbitTarget);
-const gltfLoader8 = new GLTFLoader();
-gltfLoader8.load("../models/ban.gltf", (gltfScene) => {
-  gltfScene.scene.position.z = -5.9;
-  gltfScene.scene.position.y = 0.1;
-  gltfScene.scene.position.x = 6;
-  scene.add(gltfScene.scene);
-});
-
-const gltfLoader9 = new GLTFLoader();
-gltfLoader9.load("../models/ban.gltf", (gltfScene) => {
-  gltfScene.scene.position.z = -5.9;
-  gltfScene.scene.position.y = 0.5;
-  gltfScene.scene.position.x = 6;
-  scene.add(gltfScene.scene);
-});
-
-const gltfLoader10 = new GLTFLoader();
-gltfLoader10.load("../models/ban.gltf", (gltfScene) => {
-  gltfScene.scene.position.z = -5.9;
-  gltfScene.scene.position.y = 0.1;
-  gltfScene.scene.position.x = 4.93;
-  scene.add(gltfScene.scene);
-});
-
-const gltfLoader11 = new GLTFLoader();
-gltfLoader11.load("../models/ban.gltf", (gltfScene) => {
-  gltfScene.scene.position.z = -4.85;
-  gltfScene.scene.position.y = 0.1;
-  gltfScene.scene.position.x = 6;
-  scene.add(gltfScene.scene);
-});
+      textmesh = new THREE.Mesh(tGeometry, [
+        new THREE.MeshStandardMaterial({ emissive: 0x88ffff }),
+        new THREE.MeshStandardMaterial({ color: 0x00000 }),
+      ]);
+      scene.add(textmesh);
+      textmesh.position.set(-2.5, 0.2, 3);
+      textmesh.castShadow = true;
+      textmesh.receiveShadow = true;
+    });
+  } else if (carType == "1") {
+    let text1 = "Tesla";
+    loader.load("../fonts/Bungee Spice Regular_Regular.json", function (font) {
+      const tGeometry = new TextGeometry(text1, {
+        font: font,
+        size: 0.5,
+        height: 0.5,
+        curveSegments: 1,
+        bevelEnabked: true,
+        bevelThickness: 100,
+        bevelSize: 100,
+        bevelOffset: 100,
+        bevelSegments: 100,
+      });
+      textmesh = new THREE.Mesh(tGeometry, [
+        new THREE.MeshStandardMaterial({ emissive: 0x88ffff }),
+        new THREE.MeshStandardMaterial({ color: 0x00000 }),
+      ]);
+      scene.add(textmesh);
+      textmesh.position.set(-1.5, 0.2, 3);
+      textmesh.castShadow = true;
+      textmesh.receiveShadow = true;
+    });
+  } else if (carType == "2") {
+    // Teks default jika tidak memilih mobil
+    let text = "alfa romeo";
+    loader.load("../fonts/Bungee Spice Regular_Regular.json", function (font) {
+      const tGeometry = new TextGeometry(text, {
+        font: font,
+        size: 0.5,
+        height: 0.5,
+        curveSegments: 1,
+        bevelEnabked: true,
+        bevelThickness: 100,
+        bevelSize: 100,
+        bevelOffset: 100,
+        bevelSegments: 100,
+      });
+      textmesh = new THREE.Mesh(tGeometry, [
+        new THREE.MeshStandardMaterial({ emissive: 0x88ffff }),
+        new THREE.MeshStandardMaterial({ color: 0x00000 }),
+      ]);
+      scene.add(textmesh);
+      textmesh.position.set(-2.5, 0.2, 3);
+      textmesh.castShadow = true;
+      textmesh.receiveShadow = true;
+    });
+  }
+}
 
 const size = 15;
 const divisions = 15;
-
 const gridHelper = new THREE.GridHelper(size, divisions);
 scene.add(gridHelper);
 
-function color() {
-  const carColorButton = document.getElementById("carColorButton");
-  const colorPicker = document.getElementById("colorPicker");
+const zoomButton = document.getElementById("zoomIn");
+let isZooming = false;
 
-  carColorButton.addEventListener("click", () => {
-    colorPicker.click();
-  });
+const handleZoomIn = () => {
+  camera.position.y -= 0.1;
+};
 
-  colorPicker.addEventListener("input", (event) => {
-    const selectedColor = event.target.value;
-    carColorButton.style.backgroundColor = selectedColor;
-    cube.material.color.set(selectedColor);
-  });
-}
-color();
+const startZoom = () => {
+  if (!isZooming) {
+    isZooming = true;
+    zoom();
+  }
+};
+
+const stopZoom = () => {
+  isZooming = false;
+};
+
+const zoom = () => {
+  if (isZooming) {
+    handleZoomIn();
+    requestAnimationFrame(zoom);
+  }
+};
+
+zoomButton.addEventListener("mousedown", startZoom);
+zoomButton.addEventListener("mouseup", stopZoom);
+
+zoomButton.addEventListener("touchstart", startZoom);
+zoomButton.addEventListener("touchend", stopZoom);
+zoomButton.addEventListener("touchcancel", stopZoom);
+
+const zoomOutButton = document.getElementById("zoomOut");
+let isZoomingOut = false;
+
+const handleZoomOut = () => {
+  camera.position.y += 0.1;
+};
+
+const startZoomOut = () => {
+  if (!isZoomingOut) {
+    isZoomingOut = true;
+    zoomOut();
+  }
+};
+
+const stopZoomOut = () => {
+  isZoomingOut = false;
+};
+
+const zoomOut = () => {
+  if (isZoomingOut) {
+    handleZoomOut();
+    requestAnimationFrame(zoomOut);
+  }
+};
+
+zoomOutButton.addEventListener("mousedown", startZoomOut);
+zoomOutButton.addEventListener("mouseup", stopZoomOut);
+
+zoomOutButton.addEventListener("touchstart", startZoomOut);
+zoomOutButton.addEventListener("touchend", stopZoomOut);
+zoomOutButton.addEventListener("touchcancel", stopZoomOut);
 
 const draw = () => {
-  // cylinder.rotation.y += 0.001;
-  // camera.rotation.x += 0.1
   controls.update();
 
   renderer.render(scene, camera);
