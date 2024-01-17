@@ -158,11 +158,11 @@ renderTexture({
 
 spotlightRenderer({
   color: 0xffffff,
-  intensity: 100,
-  distance: 5,
-  positionX: 0,
+  intensity: 15,
+  distance: 10,
+  positionX: 3,
   positionY: 5,
-  positionZ: 0,
+  positionZ: 3,
   positionTargetX: 0,
   positionTargetY: 1,
   positionTargetZ: 0,
@@ -171,8 +171,8 @@ spotlightRenderer({
 
 spotlightRenderer({
   color: 0xffffff,
-  intensity: 100,
-  distance: 5,
+  intensity: 15,
+  distance: 10,
   positionX: 3,
   positionY: 0.5,
   positionZ: 3,
@@ -184,8 +184,8 @@ spotlightRenderer({
 
 spotlightRenderer({
   color: 0xffffff,
-  intensity: 100,
-  distance: 5,
+  intensity: 15,
+  distance: 10,
   positionX: -3,
   positionY: 0.5,
   positionZ: 3,
@@ -197,8 +197,8 @@ spotlightRenderer({
 
 spotlightRenderer({
   color: 0xffffff,
-  intensity: 100,
-  distance: 5,
+  intensity: 15,
+  distance: 10,
   positionX: 3,
   positionY: 0.5,
   positionZ: -3,
@@ -210,8 +210,8 @@ spotlightRenderer({
 
 spotlightRenderer({
   color: 0xffffff,
-  intensity: 100,
-  distance: 5,
+  intensity: 15,
+  distance: 10,
   positionX: -3,
   positionY: 0.5,
   positionZ: -3,
@@ -247,8 +247,10 @@ scene.add(light);
 
 const pointLightHelper = new THREE.PointLightHelper(light, 1);
 scene.add(pointLightHelper);
+
 const lampButton = document.querySelector('[data-bs-title="Lamp"]');
 let isLightAdded = false;
+
 lampButton.addEventListener("click", function () {
   if (isLightAdded) {
     scene.remove(light);
@@ -277,174 +279,128 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-
 let currentCarModel;
-let selectedCar = "0"; // Assuming a default value, change it as needed
+let selectedCar = "0";
 
 const carColorButton = document.getElementById("carColorButton");
 carColorButton.addEventListener("change", function () {
-    const selectedColor = carColorButton.value;
-    changeCarColor(selectedColor);
+  const selectedColor = carColorButton.value;
+  changeCarColor(selectedColor);
 });
-
 
 function changeCarColor(color) {
   if (currentCarModel) {
-      switch (color) {
-          case "merah":
-              if (selectedCar === "1") {
-                  const carMaterial = currentCarModel.getObjectByName("Object_400").material;
-                  carMaterial.color.setHex(0xff0000);
-              } else if (selectedCar === "2") {
-                  const carMaterial = currentCarModel.getObjectByName("ID3358").material;
-                  carMaterial.color.setHex(0xff0000);
-              }
-              break;
-          case "biru":
-              if (selectedCar === "1") {
-                  const carMaterial = currentCarModel.getObjectByName("Object_400").material;
-                  carMaterial.color.setHex(0x0000ff);
-              } else if (selectedCar === "2") {
-                  const carMaterial = currentCarModel.getObjectByName("ID3358").material;
-                  carMaterial.color.setHex(0x0000ff);
-              }
-              break;
-          case "hijau":
-              if (selectedCar === "1") {
-                  const carMaterial = currentCarModel.getObjectByName("Object_400").material;
-                  carMaterial.color.setHex(0x00ff00);
-              } else if (selectedCar === "2") {
-                  const carMaterial = currentCarModel.getObjectByName("ID3358").material;
-                  carMaterial.color.setHex(0x00ff00);
-              }
-              break;
-          default:
-              // Default color or handle other cases
-              break;
-      }
+    switch (color) {
+      case "merah":
+        if (selectedCar === "1") {
+          const carMaterial = currentCarModel.getObjectByName("body1").material;
+          carMaterial.color.setHex(0xff0000);
+        } else if (selectedCar === "2") {
+          const carMaterial =
+            currentCarModel.getObjectByName("ID3358").material;
+          carMaterial.color.setHex(0xff0000);
+        }
+        break;
+      case "biru":
+        if (selectedCar === "1") {
+          const carMaterial = currentCarModel.getObjectByName("body1").material;
+          carMaterial.color.setHex(0x0000ff);
+        } else if (selectedCar === "2") {
+          const carMaterial =
+            currentCarModel.getObjectByName("ID3358").material;
+          carMaterial.color.setHex(0x0000ff);
+        }
+        break;
+      case "hijau":
+        if (selectedCar === "1") {
+          const carMaterial = currentCarModel.getObjectByName("body1").material;
+          carMaterial.color.setHex(0x00ff00);
+        } else if (selectedCar === "2") {
+          const carMaterial =
+            currentCarModel.getObjectByName("ID3358").material;
+          carMaterial.color.setHex(0x00ff00);
+        }
+        break;
+      default:
+        // Default color or handle other cases
+        break;
+    }
   }
 }
 
-
-// Add the following function to enable/disable the car color selection
 function toggleCarColorSelection(enable) {
-    carColorButton.disabled = !enable;
+  carColorButton.disabled = !enable;
 }
 
-// Modify the loadCarModel functions to call toggleCarColorSelection accordingly
 function loadCarModel0() {
-    if (currentCarModel) {
-        scene.remove(currentCarModel);
-    }
-    toggleCarColorSelection(false);
+  if (currentCarModel) {
+    scene.remove(currentCarModel);
+  }
+  toggleCarColorSelection(false);
 }
 
 function loadCarModel1() {
-    if (currentCarModel) {
-        scene.remove(currentCarModel);
-    }
-    toggleCarColorSelection(true);
-    renderModel("../models/scene.gltf", 0, 0.3, 2, 0, 0, 0, scene)
-        .then((loadedCarModel) => {
-            currentCarModel = loadedCarModel.scene;
-            currentCarModel.traverse((object) => {
-              console.log(object.name);
-            });
-        })
-        .catch((error) => {
-            console.error("Error loading the model:", error);
-        });
-}
-
-function loadCarModel2() {
-    toggleCarColorSelection(true);
-    renderModel("../models/alfa_romeo_giulia/scene.gltf", 0, 1, 0, 0, 0, 0, scene);
-}
-
-function loadCarModel3() {
-    if (currentCarModel) {
-        scene.remove(currentCarModel);
-    }
-    toggleCarColorSelection(true);
-    renderModel("../models/mersi/mersi.gltf", 0, 0.2, 0, 0, 0, 0, scene)
-        .then((loadedCarModel) => {
-            currentCarModel = loadedCarModel.scene;
-            // Menampilkan nama objek dari model mobil
+  if (currentCarModel) {
+    scene.remove(currentCarModel);
+  }
+  toggleCarColorSelection(true);
+  renderModel("../models/hondaCrx.gltf", 0, 0.35, 0, 0, 0, 0, scene)
+    .then((loadedCarModel) => {
+      currentCarModel = loadedCarModel.scene;
       currentCarModel.traverse((object) => {
         console.log(object.name);
       });
-            // const initialColor = 0xff0000;
-            // currentCarModel.getObjectByName("ID3358").material.color.setHex(initialColor);
-        })
-        .catch((error) => {
-            console.error("Error loading the model:", error);
-        });
+    })
+    .catch((error) => {
+      console.error("Error loading the model:", error);
+    });
 }
 
-// function loadCarModel0() {
-//   if (currentCarModel) {
-//     scene.remove(currentCarModel);
-//   }
-// }
+function loadCarModel2() {
+  toggleCarColorSelection(true);
+  renderModel(
+    "../models/alfa_romeo_giulia/scene.gltf",
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    scene
+  );
+}
 
-// function loadCarModel1() {
-//   if (currentCarModel) {
-//     scene.remove(currentCarModel);
-//   }
-
-//   renderModel("../models/scene.gltf", 0, 0.3, 2, 0, 0, 0, scene)
-//     .then((loadedCarModel) => {
-//       currentCarModel = loadedCarModel.scene;
-//     })
-//     .catch((error) => {
-//       console.error("Error loading the model:", error);
-//     });
-// }
-
-// function loadCarModel2() {
-//   renderModel(
-//     "../models/alfa_romeo_giulia/scene.gltf",
-//     0,
-//     1,
-//     0,
-//     0,
-//     0,
-//     0,
-//     scene
-//   );
-// }
-
-// function loadCarModel3() {
-//   if (currentCarModel) {
-//     scene.remove(currentCarModel);
-//   }
-
-//   renderModel("../models/mersi/mersi.gltf", 0, 0.2, 0, 0, 0, 0, scene)
-//     .then((loadedCarModel) => {
-//       currentCarModel = loadedCarModel.scene;
-//       const initialColor = 0xff0000;
-//       currentCarModel.getObjectByName("ID3358").material.color.setHex(initialColor);
-//     })
-//     .catch((error) => {
-//       console.error("Error loading the model:", error);
-//     });
-// }
+function loadCarModel3() {
+  if (currentCarModel) {
+    scene.remove(currentCarModel);
+  }
+  toggleCarColorSelection(true);
+  renderModel("../models/mersi.gltf", 0, 0.2, 0, 0, 0, 0, scene)
+    .then((loadedCarModel) => {
+      currentCarModel = loadedCarModel.scene;
+      currentCarModel.traverse((object) => {
+        console.log(object.name);
+      });
+    })
+    .catch((error) => {
+      console.error("Error loading the model:", error);
+    });
+}
 
 // Pemilihan mobil event listener
 carSelect.addEventListener("change", function () {
   selectedCar = carSelect.value;
   if (selectedCar === "0") {
-      loadCarModel0();
-      updateText(selectedCar);
+    loadCarModel0();
+    updateText(selectedCar);
   } else if (selectedCar === "1") {
-      loadCarModel1();
-      updateText(selectedCar);
+    loadCarModel1();
+    updateText(selectedCar);
   } else if (selectedCar === "2") {
-      loadCarModel3();
-      updateText(selectedCar);
+    loadCarModel3();
+    updateText(selectedCar);
   }
 });
-
 
 let textmesh;
 const loader = new FontLoader();
@@ -479,7 +435,7 @@ function updateText(carType) {
       textmesh.receiveShadow = true;
     });
   } else if (carType == "1") {
-    let text1 = "Tesla";
+    let text1 = "CR-X";
     loader.load("../fonts/Bungee Spice Regular_Regular.json", function (font) {
       const tGeometry = new TextGeometry(text1, {
         font: font,
@@ -497,7 +453,7 @@ function updateText(carType) {
         new THREE.MeshStandardMaterial({ color: 0x00000 }),
       ]);
       scene.add(textmesh);
-      textmesh.position.set(-1.5, 0.2, 3);
+      textmesh.position.set(-0.9, 0.2, 3);
       textmesh.castShadow = true;
       textmesh.receiveShadow = true;
     });
