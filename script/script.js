@@ -156,6 +156,77 @@ renderTexture({
   scene: scene,
 });
 
+// let isLightOn = true;
+
+// function rendererSpotlights() {
+//   if (isLightOn) {
+//     spotlightRenderer({
+//       color: 0xffffff,
+//       intensity: 15,
+//       distance: 10,
+//       positionX: 3,
+//       positionY: 5,
+//       positionZ: 3,
+//       positionTargetX: 0,
+//       positionTargetY: 1,
+//       positionTargetZ: 0,
+//       scene,
+//     });
+
+//     spotlightRenderer({
+//       color: 0xffffff,
+//       intensity: 15,
+//       distance: 10,
+//       positionX: 3,
+//       positionY: 0.5,
+//       positionZ: 3,
+//       positionTargetX: 0,
+//       positionTargetY: 1,
+//       positionTargetZ: 0,
+//       scene,
+//     });
+
+//     spotlightRenderer({
+//       color: 0xffffff,
+//       intensity: 15,
+//       distance: 10,
+//       positionX: -3,
+//       positionY: 0.5,
+//       positionZ: 3,
+//       positionTargetX: 0,
+//       positionTargetY: 1,
+//       positionTargetZ: 0,
+//       scene,
+//     });
+
+//     spotlightRenderer({
+//       color: 0xffffff,
+//       intensity: 15,
+//       distance: 10,
+//       positionX: 3,
+//       positionY: 0.5,
+//       positionZ: -3,
+//       positionTargetX: 0,
+//       positionTargetY: 0.5,
+//       positionTargetZ: -0.5,
+//       scene,
+//     });
+
+//     spotlightRenderer({
+//       color: 0xffffff,
+//       intensity: 15,
+//       distance: 10,
+//       positionX: -3,
+//       positionY: 0.5,
+//       positionZ: -3,
+//       positionTargetX: 0,
+//       positionTargetY: 0.5,
+//       positionTargetZ: -0.5,
+//       scene,
+//     });
+//   }
+// }
+
 spotlightRenderer({
   color: 0xffffff,
   intensity: 15,
@@ -248,14 +319,22 @@ scene.add(light);
 const pointLightHelper = new THREE.PointLightHelper(light, 1);
 scene.add(pointLightHelper);
 
+// const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 1);
+// scene.add(hemiLight);
+
 const lampButton = document.querySelector('[data-bs-title="Lamp"]');
 let isLightAdded = false;
 
 lampButton.addEventListener("click", function () {
   if (isLightAdded) {
     scene.remove(light);
+    scene.remove(hemiLight);
+    // isLightOn = !isLightOn;
   } else {
     scene.add(light);
+    scene.add(hemiLight);
+    // isLightOn = true;
+    // rendererSpotlights();
   }
   isLightAdded = !isLightAdded;
 });
@@ -293,8 +372,15 @@ function changeCarColor(color) {
     switch (color) {
       case "merah":
         if (selectedCar === "1") {
-          const carMaterial = currentCarModel.getObjectByName("body1").material;
-          carMaterial.color.setHex(0xff0000);
+          const carMaterial = currentCarModel.getObjectByName(
+            "hon_crxdelsol_95_cockpit_glassF_window_"
+          ).material;
+          // carMaterial.color.setHex(0xff0000);
+          carMaterial.depthTest = false;
+
+          const lightInterior = new THREE.PointLight(0xffffff, 100, 1);
+          lightInterior.position.set(0, 1.3, 0);
+          scene.add(lightInterior);
         } else if (selectedCar === "2") {
           const carMaterial =
             currentCarModel.getObjectByName("ID3358").material;
@@ -350,6 +436,11 @@ function loadCarModel1() {
       currentCarModel.traverse((object) => {
         console.log(object.name);
       });
+      const carMaterial = currentCarModel.getObjectByName(
+        "hon_crxdelsol_95_cockpit_glassF_window_"
+      ).material;
+      // carMaterial.color.setHex(0xff0000);
+      carMaterial.depthTest = false;
     })
     .catch((error) => {
       console.error("Error loading the model:", error);
@@ -483,6 +574,33 @@ function updateText(carType) {
     });
   }
 }
+
+const music = new THREE.AudioListener();
+camera.add(music);
+const sound = new THREE.Audio(music);
+const audioLoader = new THREE.AudioLoader();
+audioLoader.load("../audio/softvibes.mp3", function (buffer) {
+  sound.setBuffer(buffer);
+  sound.setLoop(true);
+  sound.setVolume(0.5);
+  // sound.play();
+});
+
+function playMusic() {
+  const musicButton = document.getElementById("musicButton");
+
+  musicButton.addEventListener("click", function () {
+    if (sound.isPlaying) {
+      sound.pause();
+    } else {
+      sound.play();
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  playMusic();
+});
 
 const size = 15;
 const divisions = 15;
