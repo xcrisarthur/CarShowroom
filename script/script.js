@@ -156,77 +156,6 @@ renderTexture({
   scene: scene,
 });
 
-// let isLightOn = true;
-
-// function rendererSpotlights() {
-//   if (isLightOn) {
-//     spotlightRenderer({
-//       color: 0xffffff,
-//       intensity: 15,
-//       distance: 10,
-//       positionX: 3,
-//       positionY: 5,
-//       positionZ: 3,
-//       positionTargetX: 0,
-//       positionTargetY: 1,
-//       positionTargetZ: 0,
-//       scene,
-//     });
-
-//     spotlightRenderer({
-//       color: 0xffffff,
-//       intensity: 15,
-//       distance: 10,
-//       positionX: 3,
-//       positionY: 0.5,
-//       positionZ: 3,
-//       positionTargetX: 0,
-//       positionTargetY: 1,
-//       positionTargetZ: 0,
-//       scene,
-//     });
-
-//     spotlightRenderer({
-//       color: 0xffffff,
-//       intensity: 15,
-//       distance: 10,
-//       positionX: -3,
-//       positionY: 0.5,
-//       positionZ: 3,
-//       positionTargetX: 0,
-//       positionTargetY: 1,
-//       positionTargetZ: 0,
-//       scene,
-//     });
-
-//     spotlightRenderer({
-//       color: 0xffffff,
-//       intensity: 15,
-//       distance: 10,
-//       positionX: 3,
-//       positionY: 0.5,
-//       positionZ: -3,
-//       positionTargetX: 0,
-//       positionTargetY: 0.5,
-//       positionTargetZ: -0.5,
-//       scene,
-//     });
-
-//     spotlightRenderer({
-//       color: 0xffffff,
-//       intensity: 15,
-//       distance: 10,
-//       positionX: -3,
-//       positionY: 0.5,
-//       positionZ: -3,
-//       positionTargetX: 0,
-//       positionTargetY: 0.5,
-//       positionTargetZ: -0.5,
-//       scene,
-//     });
-//   }
-// }
-
 spotlightRenderer({
   color: 0xffffff,
   intensity: 15,
@@ -319,8 +248,8 @@ scene.add(light);
 const pointLightHelper = new THREE.PointLightHelper(light, 1);
 scene.add(pointLightHelper);
 
-// const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 1);
-// scene.add(hemiLight);
+const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 1);
+scene.add(hemiLight);
 
 const lampButton = document.querySelector('[data-bs-title="Lamp"]');
 let isLightAdded = false;
@@ -329,12 +258,9 @@ lampButton.addEventListener("click", function () {
   if (isLightAdded) {
     scene.remove(light);
     scene.remove(hemiLight);
-    // isLightOn = !isLightOn;
   } else {
     scene.add(light);
     scene.add(hemiLight);
-    // isLightOn = true;
-    // rendererSpotlights();
   }
   isLightAdded = !isLightAdded;
 });
@@ -375,7 +301,7 @@ function changeCarColor(color) {
           const carMaterial = currentCarModel.getObjectByName(
             "hon_crxdelsol_95_cockpit_glassF_window_"
           ).material;
-          // carMaterial.color.setHex(0xff0000);
+          carMaterial.color.setHex(0xff0000);
           carMaterial.depthTest = false;
 
           const lightInterior = new THREE.PointLight(0xffffff, 100, 1);
@@ -414,6 +340,58 @@ function changeCarColor(color) {
   }
 }
 
+let isCarSelected = false;
+
+const music2 = new THREE.AudioListener();
+camera.add(music2);
+const soundCar = new THREE.Audio(music2);
+const audioLoader2 = new THREE.AudioLoader();
+audioLoader2.load("../audio/carengine.mp3", function (buffer) {
+  soundCar.setBuffer(buffer);
+  soundCar.setVolume(1);
+  // sound.play();
+});
+
+const smokeTexture = new THREE.TextureLoader().load("../texture/smoke.jpg");
+const smokeGeometry = new THREE.TorusKnotGeometry(0.1, 0.3, 3, 4, 2, 0.5);
+const smokeMaterial = new THREE.MeshLambertMaterial({
+  map: smokeTexture,
+  opacity: 0.3,
+  transparent: true,
+});
+
+const smoke = new THREE.Mesh(smokeGeometry, smokeMaterial);
+const smoke2 = new THREE.Mesh(smokeGeometry, smokeMaterial);
+function startEngine() {
+  if (isCarSelected) {
+    const engineButton = document.getElementById("engineButton");
+
+    engineButton.addEventListener("click", function () {
+      if (selectedCar == 1) {
+        smoke.position.set(-0.6, 0.5, -2.8);
+        scene.add(smoke);
+        soundCar.play();
+      } else if (selectedCar == 2) {
+        smoke.position.set(-0.6, 0.6, -2.7);
+        smoke2.position.set(0.6, 0.6, -2.7);
+        scene.add(smoke);
+        scene.add(smoke2);
+        soundCar.play();
+      }
+
+      setTimeout(function () {
+        // clearInterval(blinkInterval);
+        scene.remove(smoke);
+        scene.remove(smoke2);
+      }, 5000);
+    });
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  startEngine();
+});
+
 function toggleCarColorSelection(enable) {
   carColorButton.disabled = !enable;
 }
@@ -436,10 +414,16 @@ function loadCarModel1() {
       currentCarModel.traverse((object) => {
         console.log(object.name);
       });
+      isCarSelected = true;
+      startEngine();
+      loadSmokeModel();
       const carMaterial = currentCarModel.getObjectByName(
         "hon_crxdelsol_95_cockpit_glassF_window_"
       ).material;
-      // carMaterial.color.setHex(0xff0000);
+      const rim = currentCarModel.getObjectByName(
+        "hon_crxdelsol_95_caliperlf_lod0_caliperLF_misc_"
+      );
+      rim.material.color.setHex(0xff0000);
       carMaterial.depthTest = false;
     })
     .catch((error) => {
@@ -448,17 +432,24 @@ function loadCarModel1() {
 }
 
 function loadCarModel2() {
+  if (currentCarModel) {
+    scene.remove(currentCarModel);
+  }
   toggleCarColorSelection(true);
-  renderModel(
-    "../models/alfa_romeo_giulia/scene.gltf",
-    0,
-    1,
-    0,
-    0,
-    0,
-    0,
-    scene
-  );
+  renderModel("../models/vw.gltf", 0, 0.2, 0, 0, 0, 0, scene)
+    .then((loadedCarModel) => {
+      currentCarModel = loadedCarModel.scene;
+      currentCarModel.traverse((object) => {
+        console.log(object.name);
+      });
+      isCarSelected = true;
+      // const carMaterial = currentCarModel.getObjectByName("ID3358_8").material;
+      // carMaterial.depthTest = false;
+      startEngine();
+    })
+    .catch((error) => {
+      console.error("Error loading the model:", error);
+    });
 }
 
 function loadCarModel3() {
@@ -472,11 +463,62 @@ function loadCarModel3() {
       currentCarModel.traverse((object) => {
         console.log(object.name);
       });
+      isCarSelected = true;
+      const carMaterial = currentCarModel.getObjectByName("ID3358_8").material;
+      // carMaterial.depthTest = false;
+      startEngine();
     })
     .catch((error) => {
       console.error("Error loading the model:", error);
     });
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  const detailedInfoButton = document.getElementById("detailnfo");
+  const detailedInfoCanvas = document.getElementById("detailedInfoCanvas");
+  const carSelect = document.getElementById("carSelect");
+
+  detailedInfoButton.addEventListener("click", function () {
+    console.log(detailedInfoCanvas);
+    const selectedCar = carSelect.value;
+    detailedInfoCanvas.classList.toggle("visible");
+
+    detailedInfoCanvas.style.display =
+      detailedInfoCanvas.style.display === "none" ? "block" : "none";
+
+    let content = "<h3>Car Details</h3>";
+
+    switch (selectedCar) {
+      case "1":
+        content += `
+          <p>Make: Honda</p>
+          <p>Model: CR-X S</p>
+          <p>Year: 1988</p>
+          <p>Top Speed : 222km/h</p>
+          <p>Color: Silver</p>
+          <p>Engine: Gasoline</p>
+          <p>Interior: Leather</p>
+        `;
+        break;
+      case "2":
+        content += `
+          <p>Make: Marcedez Benz</p>
+          <p>Model: GLS</p>
+          <p>Year: 2022</p>
+          <p>Top Speed : 246km/h</p>
+          <p>Color: White</p>
+          <p>Engine: Gasoline</p>
+          <p>Interior: Alcantara</p>
+        `;
+        break;
+
+      default:
+        content += "<p>Please select a car to view details.</p>";
+    }
+
+    detailedInfoCanvas.innerHTML = content;
+  });
+});
 
 // Pemilihan mobil event listener
 carSelect.addEventListener("change", function () {
@@ -550,7 +592,7 @@ function updateText(carType) {
     });
   } else if (carType == "2") {
     // Teks default jika tidak memilih mobil
-    let text = "alfa romeo";
+    let text = "Marcedes-Benz";
     loader.load("../fonts/Bungee Spice Regular_Regular.json", function (font) {
       const tGeometry = new TextGeometry(text, {
         font: font,
@@ -568,7 +610,7 @@ function updateText(carType) {
         new THREE.MeshStandardMaterial({ color: 0x00000 }),
       ]);
       scene.add(textmesh);
-      textmesh.position.set(-2.5, 0.2, 3);
+      textmesh.position.set(-3, 0.2, 3);
       textmesh.castShadow = true;
       textmesh.receiveShadow = true;
     });
@@ -582,7 +624,7 @@ const audioLoader = new THREE.AudioLoader();
 audioLoader.load("../audio/softvibes.mp3", function (buffer) {
   sound.setBuffer(buffer);
   sound.setLoop(true);
-  sound.setVolume(0.5);
+  sound.setVolume(0.2);
   // sound.play();
 });
 
